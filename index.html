@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Survey Form</title>
+  <style>
+    /* General Spotify Theme */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(145deg, #121212, #191414);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .form-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .form-container {
+      background: #191414;
+      border-radius: 20px;
+      padding: 30px 25px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    }
+
+    h1 {
+      text-align: center;
+      color: #1DB954;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin: 15px 0 8px;
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #292929;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    textarea {
+      height: 80px;
+      resize: none;
+    }
+
+    /* Interactive Choices */
+    .choice-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+
+    .choice {
+      flex: 1;
+      margin: 0 5px;
+      text-align: center;
+    }
+
+    .choice input {
+      display: none;
+    }
+
+    .choice label {
+      display: block;
+      padding: 12px;
+      border-radius: 8px;
+      background: #292929;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .choice input:checked + label {
+      background: #1DB954;
+      color: #000;
+      transform: scale(1.05);
+    }
+
+    /* Submit Button */
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1DB954;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #1ed760;
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      background: #19aa49;
+      transform: translateY(1px);
+    }
+
+    /* Footer */
+    .form-footer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    .form-footer a {
+      color: #1DB954;
+      text-decoration: none;
+    }
+
+    /* Pop-up Confirmation */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      background: #121212;
+      padding: 40px 20px;
+      text-align: center;
+      border-radius: 20px;
+      color: #fff;
+      width: 90%;
+      max-width: 350px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    }
+
+    .popup-content .checkmark {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #1DB954;
+      margin: 0 auto 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: popIn 0.5s ease;
+    }
+
+    .checkmark::before {
+      content: "✓";
+      font-size: 36px;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .popup-content h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .popup-content p {
+      margin: 10px 0 0;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      label {
+        font-size: 0.8rem;
+      }
+
+      button {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-wrapper">
+    <div class="form-container">
+      <h1>Spotify Survey</h1>
+      <p>Your feedback helps us improve. Share your thoughts below!</p>
+
+      <form id="survey-form">
+        <!-- Name -->
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+        <!-- Gender -->
+        <label>Gender</label>
+        <div class="choice-group">
+          <div class="choice">
+            <input type="radio" id="male" name="gender" value="male" required>
+            <label for="male">Male</label>
+          </div>
+          <div class="choice">
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">Female</label>
+          </div>
+        </div>
+
+        <!-- Plan -->
+        <label>Plan</label>
+        <div class="choice-group">
+          <div class="choice">
+            <input type="radio" id="premium" name="plan" value="premium" required>
+            <label for="premium">Premium</label>
+          </div>
+          <div class="choice">
+            <input type="radio" id="normal" name="plan" value="normal">
+            <label for="normal">Normal</label>
+          </div>
+        </div>
+
+        <!-- Reason -->
+        <label for="reason">Why did you choose this plan?</label>
+        <textarea id="reason" name="reason" placeholder="Tell us more..." required></textarea>
+
+        <!-- Suggestions -->
+        <label for="suggestions">Do you have any suggestions?</label>
+        <textarea id="suggestions" name="suggestions" placeholder="Share your ideas..."></textarea>
+
+        <!-- Complaints -->
+        <label for="complaints">Do you have any complaints?</label>
+        <textarea id="complaints" name="complaints" placeholder="Let us know your concerns..."></textarea>
+
+        <!-- Years of Usage -->
+        <label for="years">How many years have you been using Spotify?</label>
+        <select id="years" name="years" required>
+          <option value="" disabled selected>Select an option</option>
+          <option value="1">Less than 1 year</option>
+          <option value="2">1-2 years</option>
+          <option value="3">3-5 years</option>
+          <option value="5+">More than 5 years</option>
+        </select>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit</button>
+      </form>
+
+      <div class="form-footer">
+        © 2024 Spotify AB | <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-up -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <div class="checkmark"></div>
+      <h2>Thank You!</h2>
+      <p>Your feedback has been recorded.</p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('survey-form');
+    const popup = document.getElementById('popup');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent form submission
+      popup.style.display = 'flex'; // Show pop-up
+
+      setTimeout(() => {
+        popup.style.display = 'none'; // Hide after 3 seconds
+        form.reset(); // Reset form
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
